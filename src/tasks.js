@@ -7,8 +7,12 @@ class Task{
          this.tasks = nTasks
          this.date = new Date()
          this.dueDate =new Date(due)
+         this.unfinished = true
     }
     
+   changeState(){
+     this.unfinished = !this.unfinished
+   }
 
    displayTask(){
     console.log("Printing task...")

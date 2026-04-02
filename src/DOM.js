@@ -4,11 +4,11 @@ const taskMaker = document.createElement("button")
 taskMaker.textContent = "+"
 taskMaker.classList.add("createBtn")
 taskMaker.addEventListener("click",()=>{
-   
+   newTask.classList.remove("hidden")
 })
 
 const newTask = document.createElement("div")
-newTask.classList.add("hidden containers")
+newTask.classList.add("hidden", "containers")
 const newTaskContent = document.createElement("div")
 newTaskContent.classList.add("contents")
 const newTitle = document.createElement("h3")
@@ -21,14 +21,33 @@ newInput.placeholder = "title"
 const newDescription = document.createElement("textArea")
 newDescription.placeholder = "description"
 
+const newDate = document.createElement("input")
+newDate.type = "datetime-local"
+
 const closeBtn = document.createElement("button")
 closeBtn.textContent = "close"
 const saveBtn = document.createElement("button")
 saveBtn.textContent = 'save'
 
-newTaskContent.append(newTitle,newInput,newDescription,saveBtn,closeBtn)
+closeBtn.addEventListener("click",()=>{
+  newTask.classList.add("hidden")
+
+})
+
+saveBtn.addEventListener("click",()=>{
+  if (!newTask.classList.contains("hidden")){
+    newTask.classList.add("hidden")}
+  const registerTask = new Task(newInput.value,newDescription.value,"2","2026-09-09")
+  registerTask.displayTask()
+
+})
+
+
+
+newTaskContent.append(newTitle,newInput,newDescription,newDate,saveBtn,closeBtn)
 newTask.append(newTaskContent)
 
+document.body.append(taskMaker,newTask)
 
 
 
