@@ -1,9 +1,11 @@
 
 import { print } from "./DOM.js"
+let taskList = []
+
 class Task{
-    constructor(name,description,nTasks,due){
+    constructor(name,nTasks,due){
+         this.id = Date.now() + Math.random();
          this.name = name
-         this.description = description
          this.tasks = nTasks
          this.date = new Date()
          this.dueDate =new Date(due)
@@ -19,8 +21,18 @@ class Task{
     print(this)
     
    }
+   add(){
+    taskList.push(this)
+   }
+   remove(){
+    taskList.splice(this[i],1)
+   }
+   
 
+}
+function deleteTaskData(id) {
+    taskList = taskList.filter(task => task.id !== id);
 }
 
 
-export {Task}
+export {Task,deleteTaskData}

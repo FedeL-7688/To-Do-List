@@ -1,4 +1,4 @@
-import { Task } from "./tasks.js";
+import { Task,deleteTaskData} from "./tasks.js";
 
 const taskMaker = document.createElement("button")
 taskMaker.textContent = "+"
@@ -9,8 +9,10 @@ taskMaker.addEventListener("click",()=>{
 
 const newTask = document.createElement("div")
 newTask.classList.add("hidden", "containers")
+
 const newTaskContent = document.createElement("div")
 newTaskContent.classList.add("contents")
+
 const newTitle = document.createElement("h3")
 newTitle.textContent = "New Element"
 
@@ -47,7 +49,7 @@ saveBtn.addEventListener("click",()=>{
 newTaskContent.append(newTitle,newInput,newDescription,newDate,saveBtn,closeBtn)
 newTask.append(newTaskContent)
 
-document.body.append(taskMaker,newTask)
+document.querySelector("#mainContainer").append(taskMaker,newTask)
 
 
 
@@ -75,12 +77,20 @@ function print(task) {
   details.classList.add("task-details");
 
   let desc = document.createElement("p");
-  desc.textContent = task.description;
+  desc.textContent = task.tasks;
   let calendar = document.createElement("p");
   calendar.textContent = `created: ${task.date.toLocaleDateString("es-AR")} `;
 
-  let editBtn = document.createElement("button");
-  editBtn.textContent = "editar";
+  const editIcon = document.createElement("i")
+  editIcon.classList.add("fa-solid", "fa-pen-to-square")
+
+  const crossIcon = document.createElement("i")
+  crossIcon.classList.add("fa-solid", "fa-xmark")
+
+  const editBtn = document.createElement("button");
+  editBtn.append(editIcon)
+  
+
   editBtn.addEventListener("click", () => {
     const editing = title.isContentEditable;
     if (editing) {
@@ -88,17 +98,43 @@ function print(task) {
       task.description = desc.textContent;
       task.dueDate = due.textContent;
 
-      editBtn.textContent = "editar";
+      
+        if (editBtn.contains(crossIcon)) {
+            crossIcon.remove();
+            
+        }
+        editBtn.textContent = " "
+        editBtn.append(editIcon);
+
     } else {
-      editBtn.textContent = "guardar";
-    }
+        if (editBtn.contains(editIcon)) {
+            editIcon.remove();
+        }
+
+        
+        editBtn.textContent = "Cancel"
+        editBtn.append(crossIcon);
+      }
 
     title.contentEditable = !editing;
     desc.contentEditable = !editing;
     due.contentEditable = !editing;
   });
 
-  details.append(desc, calendar, editBtn);
+  const deleteBtn = document.createElement("button");
+  const deleteIcon = document.createElement("i");
+  deleteIcon.classList.add("fa-solid", "fa-trash");
+  deleteBtn.append(deleteIcon);
+  deleteBtn.classList.add("delete-btn");
+
+  deleteBtn.addEventListener("click", (e) => {
+    // e.stopPropagation(); 
+    
+    taskCard.remove();
+    deleteTaskData(task.id);
+  });
+
+  details.append(desc, calendar, editBtn,deleteBtn);
 
   header.addEventListener("click", () => {
     details.classList.toggle("show");
@@ -108,7 +144,7 @@ function print(task) {
   taskCard.append(header, details);
 
   const container = document.querySelector("#mainContainer");
-  container.append(taskCard);
+  container.insertBefore(taskCard,taskMaker);
 }
 
 
