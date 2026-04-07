@@ -6,7 +6,7 @@ class Task{
     constructor(name,nTasks,due){
          this.id = Date.now() + Math.random();
          this.name = name
-         this.tasks = nTasks
+         this.description = nTasks
          this.date = new Date()
          this.dueDate =new Date(due)
          this.unfinished = true

@@ -20,8 +20,25 @@ const newInput = document.createElement("input")
 newInput.type = "text"
 newInput.placeholder = "title"
 
-const newDescription = document.createElement("textArea")
-newDescription.placeholder = "description"
+const newDescription = document.createElement("div")
+newDescription.placeholder = "tasks"
+
+const addTaskBtn = document.createElement("button");
+addTaskBtn.textContent = "+ new task";
+addTaskBtn.type = "button";
+addTaskBtn.addEventListener("click",()=>{
+  const taskInput = document.createElement("input");
+    taskInput.type = "text";
+    taskInput.placeholder = "cook dinner...";
+    taskInput.classList.add("desc-task-input");
+    newDescription.append(taskInput);
+
+})
+
+
+
+
+
 
 const newDate = document.createElement("input")
 newDate.type = "datetime-local"
@@ -31,6 +48,7 @@ closeBtn.textContent = "close"
 const saveBtn = document.createElement("button")
 saveBtn.textContent = 'save'
 
+
 closeBtn.addEventListener("click",()=>{
   newTask.classList.add("hidden")
 
@@ -39,14 +57,21 @@ closeBtn.addEventListener("click",()=>{
 saveBtn.addEventListener("click",()=>{
   if (!newTask.classList.contains("hidden")){
     newTask.classList.add("hidden")}
-  const registerTask = new Task(newInput.value,newDescription.value,"2","2026-09-09")
+
+    const descriptionTasks = Array.from(document.querySelectorAll(".desc-task-input"))
+                                  .map(input => input.value)
+                                  .filter(val => val.trim() !== ""); 
+  const registerTask = new Task(newInput.value,descriptionTasks,"2026-09-09")
   registerTask.displayTask()
+
+  newDescription.innerHTML = ""; 
+  newInput.value = "";
 
 })
 
 
 
-newTaskContent.append(newTitle,newInput,newDescription,newDate,saveBtn,closeBtn)
+newTaskContent.append(newTitle,newInput,newDescription,addTaskBtn,newDate,saveBtn,closeBtn)
 newTask.append(newTaskContent)
 
 document.querySelector("#mainContainer").append(taskMaker,newTask)
@@ -73,11 +98,32 @@ function print(task) {
 
   header.append(title, due, arrow);
 
+
+  
+
   const details = document.createElement("div");
   details.classList.add("task-details");
 
-  let desc = document.createElement("p");
-  desc.textContent = task.tasks;
+  task.description.forEach(task => {
+      const taskWrapper = document.createElement("div");
+      taskWrapper.style.display = "flex";
+      taskWrapper.style.gap = "10px";
+
+      const check = document.createElement("input");
+      check.type = "checkbox";
+
+      const line = document.createElement("p");
+      line.contentEditable=true
+      line.textContent = task;
+      line.style.margin = "0";
+
+      taskWrapper.append(check, line);
+      details.append(taskWrapper);
+  });
+
+  // let desc = document.createElement("p");
+  // desc.textContent = task.description;
+
   let calendar = document.createElement("p");
   calendar.textContent = `created: ${task.date.toLocaleDateString("es-AR")} `;
 
@@ -95,7 +141,7 @@ function print(task) {
     const editing = title.isContentEditable;
     if (editing) {
       task.name = title.textContent;
-      task.description = desc.textContent;
+      
       task.dueDate = due.textContent;
 
       
@@ -117,7 +163,7 @@ function print(task) {
       }
 
     title.contentEditable = !editing;
-    desc.contentEditable = !editing;
+    
     due.contentEditable = !editing;
   });
 
@@ -128,13 +174,13 @@ function print(task) {
   deleteBtn.classList.add("delete-btn");
 
   deleteBtn.addEventListener("click", (e) => {
-    // e.stopPropagation(); 
+ 
     
     taskCard.remove();
     deleteTaskData(task.id);
   });
 
-  details.append(desc, calendar, editBtn,deleteBtn);
+  details.append( calendar, editBtn,deleteBtn);
 
   header.addEventListener("click", () => {
     details.classList.toggle("show");
