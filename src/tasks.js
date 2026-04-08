@@ -1,6 +1,7 @@
 
 import { print } from "./DOM.js"
-let taskList = []
+
+
 
 class Task{
     constructor(name,nTasks,due){
@@ -33,6 +34,7 @@ class Task{
 function deleteTaskData(id) {
     taskList = taskList.filter(task => task.id !== id);
 }
+
 
 
 export {Task,deleteTaskData}

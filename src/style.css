@@ -101,9 +101,9 @@ h1{
     height: 100%;
     background: rgba(0,0,0,0.5);
 
-    /* display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
 }
 .contents{
     background: rgb(15, 232, 240);
@@ -111,11 +111,16 @@ h1{
     border-radius: 10px;
     width: 300px;
 }
+.contents>h3{
+    background-color: whitesmoke;
+    border-radius: 10px;
+    border: 1px solid black;
+    justify-self: center;
+    padding-inline: 5px;
+    margin-top: 0;
+}
 button{
     border: 0px;
-}
-.fa-solid:hover{
-    background-color: rgb(15, 232, 240);
 }
 .createBtn{
     max-height: 70px;
@@ -129,4 +134,27 @@ button{
      background-color: rgb(110, 234, 238);
      border: 0;
      
+}
+.styleBtn{
+    margin-top: 5px;
+    margin-inline-end: 10px;
+    border: 1px solid grey;
+}
+.taskTitle{
+    width: 90%;
+    height: 20px;
+    border: solid 2px rgb(116, 116, 116);
+    margin-bottom: 3px;
+}
+.desc-task-input{
+    margin-bottom: 3px;
+}
+.editsButtons{
+    border-radius: 50%;
+    height: 20px;
+    width: auto;
+}
+
+.fa-solid:hover{
+    background-color: rgb(15, 232, 240);
 }

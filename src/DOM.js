@@ -19,12 +19,14 @@ newTitle.textContent = "New Element"
 const newInput = document.createElement("input")
 newInput.type = "text"
 newInput.placeholder = "title"
+newInput.classList.add("taskTitle")
 
 const newDescription = document.createElement("div")
 newDescription.placeholder = "tasks"
 
 const addTaskBtn = document.createElement("button");
 addTaskBtn.textContent = "+ new task";
+addTaskBtn.classList.add("styleBtn")
 addTaskBtn.type = "button";
 addTaskBtn.addEventListener("click",()=>{
   const taskInput = document.createElement("input");
@@ -45,8 +47,10 @@ newDate.type = "datetime-local"
 
 const closeBtn = document.createElement("button")
 closeBtn.textContent = "close"
+closeBtn.classList.add("styleBtn")
 const saveBtn = document.createElement("button")
 saveBtn.textContent = 'save'
+saveBtn.classList.add("styleBtn")
 
 
 closeBtn.addEventListener("click",()=>{
@@ -113,7 +117,7 @@ function print(task) {
       check.type = "checkbox";
 
       const line = document.createElement("p");
-      line.contentEditable=true
+      // line.contentEditable=false
       line.textContent = task;
       line.style.margin = "0";
 
@@ -134,6 +138,7 @@ function print(task) {
   crossIcon.classList.add("fa-solid", "fa-xmark")
 
   const editBtn = document.createElement("button");
+  editBtn.classList.add("editsButtons")
   editBtn.append(editIcon)
   
 
@@ -171,7 +176,7 @@ function print(task) {
   const deleteIcon = document.createElement("i");
   deleteIcon.classList.add("fa-solid", "fa-trash");
   deleteBtn.append(deleteIcon);
-  deleteBtn.classList.add("delete-btn");
+  deleteBtn.classList.add("editsButtons");
 
   deleteBtn.addEventListener("click", (e) => {
  
