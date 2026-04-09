@@ -1,12 +1,13 @@
-import "./style.css"
+import "./style.css";
 
-import {Task} from "./tasks.js"
-import { retrievedColor } from "./storage.js"
+import { Task } from "./tasks.js";
+import { storeTask, returnTask } from "./storage.js";
 
-console.log(retrievedColor)
-
-const toby = new Task("wash Toby",["take Toby to the petShop to take a bath"],"2026-06-25")
-toby.displayTask()
-
-const park = new Task("testing", ["further testing"],"35-05-25")
-park.displayTask()
+const returned = returnTask();
+console.log("retreived data: ", returned);
+returned.forEach((task) => {
+  const restoredTask = new Task(task.name, task.description, task.dueDate);
+  restoredTask.id = task.id;
+  restoredTask.add();
+  restoredTask.displayTask();
+});

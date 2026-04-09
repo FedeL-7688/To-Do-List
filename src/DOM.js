@@ -1,87 +1,90 @@
-import { Task,deleteTaskData} from "./tasks.js";
+import { returnTask, storeTask } from "./storage.js";
+import { Task, deleteTaskData, taskList } from "./tasks.js";
 
-const taskMaker = document.createElement("button")
-taskMaker.textContent = "+"
-taskMaker.classList.add("createBtn")
-taskMaker.addEventListener("click",()=>{
-   newTask.classList.remove("hidden")
-})
+const taskMaker = document.createElement("button");
+taskMaker.textContent = "+";
+taskMaker.classList.add("createBtn");
+taskMaker.addEventListener("click", () => {
+  newTask.classList.remove("hidden");
+});
 
-const newTask = document.createElement("div")
-newTask.classList.add("hidden", "containers")
+const newTask = document.createElement("div");
+newTask.classList.add("hidden", "containers");
 
-const newTaskContent = document.createElement("div")
-newTaskContent.classList.add("contents")
+const newTaskContent = document.createElement("div");
+newTaskContent.classList.add("contents");
 
-const newTitle = document.createElement("h3")
-newTitle.textContent = "New Element"
+const newTitle = document.createElement("h3");
+newTitle.textContent = "New Element";
 
-const newInput = document.createElement("input")
-newInput.type = "text"
-newInput.placeholder = "title"
-newInput.classList.add("taskTitle")
+const newInput = document.createElement("input");
+newInput.type = "text";
+newInput.placeholder = "title";
+newInput.classList.add("taskTitle");
 
-const newDescription = document.createElement("div")
-newDescription.placeholder = "tasks"
+const newDescription = document.createElement("div");
+newDescription.placeholder = "tasks";
 
 const addTaskBtn = document.createElement("button");
 addTaskBtn.textContent = "+ new task";
-addTaskBtn.classList.add("styleBtn")
+addTaskBtn.classList.add("styleBtn");
 addTaskBtn.type = "button";
-addTaskBtn.addEventListener("click",()=>{
+addTaskBtn.addEventListener("click", () => {
   const taskInput = document.createElement("input");
-    taskInput.type = "text";
-    taskInput.placeholder = "cook dinner...";
-    taskInput.classList.add("desc-task-input");
-    newDescription.append(taskInput);
+  taskInput.type = "text";
+  taskInput.placeholder = "cook dinner...";
+  taskInput.classList.add("desc-task-input");
+  newDescription.append(taskInput);
+});
 
-})
+const newDate = document.createElement("input");
+newDate.type = "datetime-local";
 
+const closeBtn = document.createElement("button");
+closeBtn.textContent = "close";
+closeBtn.classList.add("styleBtn");
+const saveBtn = document.createElement("button");
+saveBtn.textContent = "save";
+saveBtn.classList.add("styleBtn");
 
+closeBtn.addEventListener("click", () => {
+  newTask.classList.add("hidden");
+});
 
+saveBtn.addEventListener("click", () => {
+  if (!newTask.classList.contains("hidden")) {
+    newTask.classList.add("hidden");
+  }
 
+  const descriptionTasks = Array.from(
+    document.querySelectorAll(".desc-task-input"),
+  )
+    .map((input) => input.value)
+    .filter((val) => val.trim() !== "");
+  const registerTask = new Task(newInput.value, descriptionTasks, "2026-09-09");
+  registerTask.displayTask();
 
-
-const newDate = document.createElement("input")
-newDate.type = "datetime-local"
-
-const closeBtn = document.createElement("button")
-closeBtn.textContent = "close"
-closeBtn.classList.add("styleBtn")
-const saveBtn = document.createElement("button")
-saveBtn.textContent = 'save'
-saveBtn.classList.add("styleBtn")
-
-
-closeBtn.addEventListener("click",()=>{
-  newTask.classList.add("hidden")
-
-})
-
-saveBtn.addEventListener("click",()=>{
-  if (!newTask.classList.contains("hidden")){
-    newTask.classList.add("hidden")}
-
-    const descriptionTasks = Array.from(document.querySelectorAll(".desc-task-input"))
-                                  .map(input => input.value)
-                                  .filter(val => val.trim() !== ""); 
-  const registerTask = new Task(newInput.value,descriptionTasks,"2026-09-09")
-  registerTask.displayTask()
-
-  newDescription.innerHTML = ""; 
+  newDescription.innerHTML = "";
   newInput.value = "";
 
-})
+  registerTask.add();
+  console.log("Task List", taskList);
+  storeTask();
+  // console.log("stored task",returnTask())
+});
 
+newTaskContent.append(
+  newTitle,
+  newInput,
+  newDescription,
+  addTaskBtn,
+  newDate,
+  saveBtn,
+  closeBtn,
+);
+newTask.append(newTaskContent);
 
-
-newTaskContent.append(newTitle,newInput,newDescription,addTaskBtn,newDate,saveBtn,closeBtn)
-newTask.append(newTaskContent)
-
-document.querySelector("#mainContainer").append(taskMaker,newTask)
-
-
-
+document.querySelector("#mainContainer").append(taskMaker, newTask);
 
 function print(task) {
   const taskCard = document.createElement("div");
@@ -102,73 +105,65 @@ function print(task) {
 
   header.append(title, due, arrow);
 
-
-  
-
   const details = document.createElement("div");
   details.classList.add("task-details");
 
-  task.description.forEach(task => {
-      const taskWrapper = document.createElement("div");
-      taskWrapper.style.display = "flex";
-      taskWrapper.style.gap = "10px";
+  task.description.forEach((task) => {
+    const taskWrapper = document.createElement("div");
+    taskWrapper.style.display = "flex";
+    taskWrapper.style.gap = "10px";
+    
 
-      const check = document.createElement("input");
-      check.type = "checkbox";
+    const check = document.createElement("input");
+    check.type = "checkbox";
 
-      const line = document.createElement("p");
-      // line.contentEditable=false
-      line.textContent = task;
-      line.style.margin = "0";
+    const line = document.createElement("p");
+    line.textContent = task;
+    line.style.margin = "0";
 
-      taskWrapper.append(check, line);
-      details.append(taskWrapper);
+    taskWrapper.append(check, line);
+    details.append(taskWrapper);
+    //ojo aca sobre retornar line
+    return line
   });
-
-  // let desc = document.createElement("p");
-  // desc.textContent = task.description;
 
   let calendar = document.createElement("p");
   calendar.textContent = `created: ${task.date.toLocaleDateString("es-AR")} `;
 
-  const editIcon = document.createElement("i")
-  editIcon.classList.add("fa-solid", "fa-pen-to-square")
+  const editIcon = document.createElement("i");
+  editIcon.classList.add("fa-solid", "fa-pen-to-square");
 
-  const crossIcon = document.createElement("i")
-  crossIcon.classList.add("fa-solid", "fa-xmark")
+  const crossIcon = document.createElement("i");
+  crossIcon.classList.add("fa-solid", "fa-xmark");
 
   const editBtn = document.createElement("button");
-  editBtn.classList.add("editsButtons")
-  editBtn.append(editIcon)
-  
+  editBtn.classList.add("editsButtons");
+  editBtn.append(editIcon);
 
   editBtn.addEventListener("click", () => {
     const editing = title.isContentEditable;
     if (editing) {
       task.name = title.textContent;
-      
+      task.description = line.textContent;
       task.dueDate = due.textContent;
 
-      
-        if (editBtn.contains(crossIcon)) {
-            crossIcon.remove();
-            
-        }
-        editBtn.textContent = " "
-        editBtn.append(editIcon);
-
+      if (editBtn.contains(crossIcon)) {
+        crossIcon.remove();
+      }
+      editBtn.textContent = " ";
+      editBtn.append(editIcon);
     } else {
-        if (editBtn.contains(editIcon)) {
-            editIcon.remove();
-        }
-
-        
-        editBtn.textContent = "Cancel"
-        editBtn.append(crossIcon);
+      if (editBtn.contains(editIcon)) {
+        editIcon.remove();
       }
 
+      editBtn.textContent = "Cancel";
+      editBtn.append(crossIcon);
+    }
+
     title.contentEditable = !editing;
-    
+    // estaba editando esto sobre los line, cuidado// 
+    line.contentEditable = !editing;
     due.contentEditable = !editing;
   });
 
@@ -178,14 +173,13 @@ function print(task) {
   deleteBtn.append(deleteIcon);
   deleteBtn.classList.add("editsButtons");
 
-  deleteBtn.addEventListener("click", (e) => {
- 
-    
+  deleteBtn.addEventListener("click", () => {
     taskCard.remove();
     deleteTaskData(task.id);
+    storeTask();
   });
 
-  details.append( calendar, editBtn,deleteBtn);
+  details.append(calendar, editBtn, deleteBtn);
 
   header.addEventListener("click", () => {
     details.classList.toggle("show");
@@ -195,12 +189,7 @@ function print(task) {
   taskCard.append(header, details);
 
   const container = document.querySelector("#mainContainer");
-  container.insertBefore(taskCard,taskMaker);
+  container.insertBefore(taskCard, taskMaker);
 }
 
-
-
-
 export { print };
-
-
