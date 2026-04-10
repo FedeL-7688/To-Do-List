@@ -45,11 +45,11 @@ h1{
     display: flex;
 }
 .task-header>span{
-    justify-content: center;
-    align-content: center;
-    padding-top: 15px;
+    
     margin-left: 20px;
-    color: red;
+    color: red; 
+    align-self: center;
+    justify-self: center;
     
 }
 

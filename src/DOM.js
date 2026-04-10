@@ -107,7 +107,8 @@ function print(task) {
 
   const details = document.createElement("div");
   details.classList.add("task-details");
-
+  
+  const lineContainer = []
   task.description.forEach((task) => {
     const taskWrapper = document.createElement("div");
     taskWrapper.style.display = "flex";
@@ -118,13 +119,14 @@ function print(task) {
     check.type = "checkbox";
 
     const line = document.createElement("p");
+    line.classList.add("details-line-content")
     line.textContent = task;
     line.style.margin = "0";
 
     taskWrapper.append(check, line);
     details.append(taskWrapper);
     //ojo aca sobre retornar line
-    return line
+    lineContainer.push(line)
   });
 
   let calendar = document.createElement("p");
@@ -144,8 +146,10 @@ function print(task) {
     const editing = title.isContentEditable;
     if (editing) {
       task.name = title.textContent;
-      task.description = line.textContent;
+
       task.dueDate = due.textContent;
+     task.description = lineContainer.map(line => line.textContent)
+     storeTask()
 
       if (editBtn.contains(crossIcon)) {
         crossIcon.remove();
@@ -162,9 +166,8 @@ function print(task) {
     }
 
     title.contentEditable = !editing;
-    // estaba editando esto sobre los line, cuidado// 
-    line.contentEditable = !editing;
     due.contentEditable = !editing;
+    lineContainer.forEach(line=>line.contentEditable = !editing)
   });
 
   const deleteBtn = document.createElement("button");
